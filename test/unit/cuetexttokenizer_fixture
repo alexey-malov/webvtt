@@ -1,6 +1,8 @@
+#ifndef __WEBVTT_TEST_CUETOKENIZER_FIXTURE__
+# define __WEBVTT_TEST_CUETOKENIZER_FIXTURE__
 #include <gtest/gtest.h>
 extern "C" {
-#include "libwebvtt/cuetext.c"
+#include <webvtt/cuetext_internal.h>
 }
 
 enum
@@ -50,3 +52,5 @@ class CueTextTokenizerTest : public ::testing::Test
     webvtt_status current_status;
     const char *pos, *start;
 };
+
+#endif

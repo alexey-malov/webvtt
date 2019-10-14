@@ -29,7 +29,9 @@ autom4te.cache
 install-sh
 ltmain.sh
 missing
+.idea/
 build/include/
+build/
 include/Makefile
 src/Makefile
 src/parsevtt/Makefile

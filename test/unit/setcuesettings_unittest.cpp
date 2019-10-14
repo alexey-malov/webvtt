@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 extern "C" {
-#include "libwebvtt/cue_internal.h"
+#include "webvtt/cue_internal.h"
 }
 
 class SetCueSetting : public ::testing::Test

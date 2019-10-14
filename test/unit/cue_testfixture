@@ -3,6 +3,9 @@
 
 #include "test_parser"
 
+// This is set by CMake to contain the TEST_FILE_DIR value.
+#include "test_config.h"
+
 enum
 {
  RLM = 0x200F,
@@ -111,9 +114,8 @@ protected:
     // If TEST_FILE_DIR has not been set then that means we are probably
     // not executing from a make command. Therefore, just use the path
     // passed in.
-    filePath =
-				std::string( getenv("TEST_FILE_DIR") ? getenv("TEST_FILE_DIR") : "." ) +
-        std::string( "/" ) + relativeFilePath;
+
+    filePath = TEST_FILE_DIR + std::string( "/" ) + relativeFilePath;
 
     parser = new ItemStorageParser( filePath.c_str() );
   }

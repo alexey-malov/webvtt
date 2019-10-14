@@ -2,10 +2,13 @@
 #  define __REGRESSION_TESTFIXTURE__
 
 #  include <gtest/gtest.h>
-#  include <libwebvtt/parser_internal.h>
+#  include <webvtt/parser_internal.h>
 #  include <limits.h>
 #  include <fstream>
 #  include <string>
+
+// This is set by CMake to contain the TEST_FILE_DIR value.
+#include "test_config.h"
 
 class RegressionTest : public ::testing::Test
 {
@@ -24,9 +27,7 @@ public:
 
   static std::string testPath( const std::string &path )
   {
-    const char *envpath = getenv( "TEST_FILE_DIR" );
-    return std::string( envpath ? envpath : "." ) + "/" 
-           + "regressions" + "/" + path;
+    return TEST_FILE_DIR + std::string("/regressions/") + path;
   }
 
   bool parse( const std::string &file, int bufferSize = 0x4000 )

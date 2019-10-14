@@ -1,22 +1,21 @@
-language: c
+dist: bionic
+
+language: cpp
 
 compiler:
   - gcc
-
-env:
-#  - BUILD_TYPE="GCC check" BUILD="make check" ANALYSIS="" ANALYSIS_ARGS="" AC_OPTIONS=""
-  - BUILD_TYPE="GCC distcheck" BUILD="make distcheck" ANALYSIS="" ANALYSIS_ARGS="" AC_OPTIONS="" PACKAGES=""
-  - BUILD_TYPE="GCC valgrind" BUILD="make check" ANALYSIS="" ANALYSIS_ARGS="" AC_OPTIONS="--enable-valgrind" PACKAGES="valgrind"
-#  - BUILD_TYPE="clang scan-build (without --status-bugs)" BUILD="make check" ANALYSIS="scan-build" ANALYSIS_ARGS="-v -v -k" AC_OPTIONS="" PACKAGES="clang"
+  - clang
 
 before_install:
-  - '[[ -z "${PACKAGES}" ]] || sudo apt-get -qq update'
-  - '[[ -z "${PACKAGES}" ]] || sudo apt-get -qq install ${PACKAGES}'
+  - echo $LANG
+  - echo $LC_ALL
+
+before_script:
+  - mkdir $TRAVIS_BUILD_DIR/build
+  - cd $TRAVIS_BUILD_DIR/build
+  - cmake ..
 
 script:
-  - "./bootstrap.sh"
-  - "${ANALYSIS} ./configure ${AC_OPTIONS}"
-  - "${ANALYSIS} ${ANALYSIS_ARGS} ${BUILD}"
-
-notifications:
-  irc: "irc.freenode.net#seneca-webvtt"
+  - cd $TRAVIS_BUILD_DIR/build
+  - make
+  - test/unit/unittests

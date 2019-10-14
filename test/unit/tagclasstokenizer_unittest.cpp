@@ -1,7 +1,7 @@
 #include "cuetexttokenizer_fixture"
 #include <webvttxx/string>
 extern "C" {
-  #include "libwebvtt/string.c"
+  #include "webvtt/string.c"
 }
 
 class ClassStateTokenizerTest : public CueTextTokenizerTest
