@@ -54,4 +54,9 @@ target_link_libraries(unittests
 set(TEST_FILE_DIR "${PROJECT_SOURCE_DIR}/test/unit")
 configure_file(test_config.h.in test_config.h @ONLY)
 
+if (WIN32 OR WIN64)
+  set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ ${CMAKE_CXX_STANDARD_LIBRARIES}")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+endif (WIN32 OR WIN64)
+
 add_test(NAME libwebvtt_tests COMMAND unittests)

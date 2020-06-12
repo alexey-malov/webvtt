@@ -38,6 +38,31 @@ Once built, the static library and include files are available at these location
 * Static library: `build/src/webvttxx/libwebvttxx.a`
 * Include: `include/webvttxx`
 
+### Building A dll on Windows (MinGW)
+[CMake](https://cmake.org/) is also used on Windows for running the builds and tests, but it's recommended to use [MSYS2](https://www.msys2.org/) to create the Mingw64 build environment.
+
+When using CMake, it's recommended that builds take place outside of the main project source, such as in a `build` directory.
+
+1. [Download, install, and update MSYS2 using the steps on the MSYS2 homepage](https://www.msys2.org/)
+2. Open the MSYS2 terminal, choosing "Mingw-w64 64 bit" when prompted
+3. Change directories to the working folder where you want to build libwebvtt. Keep in mind that the C:\ for Windows is mounted under `/c/` in MinGW. For example, if the build location is "C:\Users\username\sources\", then do `cd /c/users/username/sources/`
+
+```bash
+# clone the project
+git clone https://github.com/alexa/webvtt.git
+
+# change directories to the project root
+cd webvtt
+
+# create and enter the build directory
+mkdir build && cd build
+
+# configure the project with CMake, using the MSYS generator
+cmake -G 'MSYS Makefiles' -DBUILD_LIBRARY=1 ..
+
+# compile the DLL
+make libwebvtt
+```
 
 ## Running Tests:
 
