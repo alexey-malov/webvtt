@@ -54,6 +54,8 @@ extern "C" {
 #   define WEBVTT_CALLBACK __cdecl
 #   if WEBVTT_BUILD_LIBRARY
 #     define WEBVTT_EXPORT __declspec(dllexport)
+/* Expose private functions necessary to run the unit tests. */
+#     define WEBVTT_INTERN __declspec(dllexport)
 #   elif !WEBVTT_STATIC
 #     define WEBVTT_EXPORT __declspec(dllimport)
 #   else
@@ -64,6 +66,8 @@ extern "C" {
 #   if WEBVTT_OS_WIN32
 #     if WEBVTT_BUILD_LIBRARY
 #       define WEBVTT_EXPORT __declspec(dllexport)
+/* Expose private functions necessary to run the unit tests. */
+#       define WEBVTT_INTERN __declspec(dllexport)
 #     elif !WEBVTT_STATIC
 #       define WEBVTT_EXPORT __declspec(dllimport)
 #     else
