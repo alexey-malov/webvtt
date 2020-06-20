@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
 add_definitions("-DACSDK_LOG_MODULE=captionslib")
 
-if (BUILD_LIBRARY AND WIN32 OR WIN64)
+if (BUILD_LIBRARY AND (WIN32 OR WIN64 OR MSVC))
   add_library(libwebvtt SHARED
           alloc.c
           cue.c
@@ -12,7 +12,7 @@ if (BUILD_LIBRARY AND WIN32 OR WIN64)
           node.c
           parser.c
           string.c)
-else (BUILD_LIBRARY AND WIN32 OR WIN64)
+else (BUILD_LIBRARY AND (WIN32 OR WIN64 OR MSVC))
   add_library(libwebvtt STATIC
           alloc.c
           cue.c
@@ -22,7 +22,7 @@ else (BUILD_LIBRARY AND WIN32 OR WIN64)
           node.c
           parser.c
           string.c)
-endif (BUILD_LIBRARY AND WIN32 OR WIN64)
+endif (BUILD_LIBRARY AND (WIN32 OR WIN64 OR MSVC))
 
 target_include_directories(libwebvtt PUBLIC
         "${libwebvtt_SOURCE_DIR}"
