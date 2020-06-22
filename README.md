@@ -38,7 +38,7 @@ Once built, the static library and include files are available at these location
 * Static library: `build/src/webvttxx/libwebvttxx.a`
 * Include: `include/webvttxx`
 
-### Building A dll on Windows (MinGW)
+### Building a .dll in Windows (MinGW)
 [CMake](https://cmake.org/) is also used on Windows for running the builds and tests, but it's recommended to use [MSYS2](https://www.msys2.org/) to create the Mingw64 build environment.
 
 When using CMake, it's recommended that builds take place outside of the main project source, such as in a `build` directory.
@@ -81,6 +81,15 @@ make all test
 # run the test executable
 test/unit/unittests
 ```
+
+### Building in Microsoft Visual Studio 10 with UWP
+1. Download or clone this repository.
+2. Ensure that [Visual Studio Installer](https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio?view=vs-2019) has installed the following Workloads:
+  * Desktop development with C++
+  * Universal Windows Platform development
+3. Open Microsoft Visual Studio, and File -> Open -> CMake...
+4. Navigate to this project's CMakeLists.txt in the root project directory. This will import the Webvtt project. This project's Visual Studio settings are in CMakeSettings.json. It's configured already to build libwebvtt.dll.
+5. Select Build -> Build All. This will produce a .lib and a .dll file in out/build/x64-Debug/src/webvtt, and some .lib files in the other src/ directories.
 
 ## Versioning
 
