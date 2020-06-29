@@ -64,6 +64,15 @@ cmake -G 'MSYS Makefiles' -DBUILD_LIBRARY=1 ..
 make libwebvtt
 ```
 
+### Building in Microsoft Visual Studio 10 with UWP
+1. Download or clone this repository.
+2. Ensure that [Visual Studio Installer](https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio?view=vs-2019) has installed the following Workloads:
+  * Desktop development with C++
+  * Universal Windows Platform development
+3. Open Microsoft Visual Studio, and File -> Open -> CMake...
+4. Navigate to this project's CMakeLists.txt in the root project directory. This will import the Webvtt project. This project's Visual Studio settings are in CMakeSettings.json. It's configured already to build libwebvtt.dll.
+5. Select Build -> Build All. This will produce a .lib and a .dll file in out/build/x64-Debug/src/webvtt, and some .lib files in the other src/ directories.
+
 ## Running Tests:
 
 All tests are written using [Google Test](https://github.com/google/googletest).
@@ -81,15 +90,6 @@ make all test
 # run the test executable
 test/unit/unittests
 ```
-
-### Building in Microsoft Visual Studio 10 with UWP
-1. Download or clone this repository.
-2. Ensure that [Visual Studio Installer](https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio?view=vs-2019) has installed the following Workloads:
-  * Desktop development with C++
-  * Universal Windows Platform development
-3. Open Microsoft Visual Studio, and File -> Open -> CMake...
-4. Navigate to this project's CMakeLists.txt in the root project directory. This will import the Webvtt project. This project's Visual Studio settings are in CMakeSettings.json. It's configured already to build libwebvtt.dll.
-5. Select Build -> Build All. This will produce a .lib and a .dll file in out/build/x64-Debug/src/webvtt, and some .lib files in the other src/ directories.
 
 ## Versioning
 
