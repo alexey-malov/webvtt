@@ -303,7 +303,7 @@ do_push( webvtt_parser self, webvtt_uint token, webvtt_uint back,
 {
   if( STACK_SIZE + 1 >= self->stack_alloc ) {
     webvtt_state *stack =
-        ( webvtt_state * )webvtt_alloc0( sizeof( webvtt_state ) *
+        ( webvtt_state * )webvtt_alloc0( (webvtt_uint)sizeof( webvtt_state ) *
                                          ( self->stack_alloc << 1 ) ), *tmp;
     if( !stack ) {
       ERROR( WEBVTT_ALLOCATION_FAILED );
@@ -495,6 +495,7 @@ WEBVTT_INTERN webvtt_status
 webvtt_proc_cueline( webvtt_parser self, webvtt_cue *cue,
                      webvtt_string *line )
 {
+  SAFE_ASSERT( cue != NULL );
   const char *text;
   webvtt_uint length;
   DIE_IF( line == NULL );
@@ -604,9 +605,9 @@ parse_webvtt( webvtt_parser self, const char *buffer, webvtt_uint *ppos,
         }
       }
       if( SP->flags ) {
-        webvtt_token token = webvtt_lex_newline( self, buffer, &pos, len,
+        webvtt_token t = webvtt_lex_newline( self, buffer, &pos, len,
                                                  self->finished );
-        if( token == NEWLINE ) {
+        if( t == NEWLINE ) {
           POP();
           continue;
         }
@@ -840,7 +841,7 @@ webvtt_read_cuetext( webvtt_parser self, const char *b,
   webvtt_cue *cue;
 
   /* Ensure that we have a cue to work with */
-  SAFE_ASSERT( self->top->type = V_CUE );
+  SAFE_ASSERT( self->top->type == V_CUE );
   cue = self->top->v.cue;
 
   /**
@@ -882,6 +883,7 @@ webvtt_read_cuetext( webvtt_parser self, const char *b,
         self->token_pos = 0;
         self->line++;
 
+        SAFE_ASSERT(self->line_buffer.d);
         /* Remove the '\n' that we appended to determine that we're in state 1
          */
         self->line_buffer.d->text[ --self->line_buffer.d->length ] = 0;
@@ -1062,7 +1064,7 @@ webvtt_parse_int( const char **pb, int *pdigits )
       /**
        * Digit character, carry on
        */
-      result = result * 10 + ( ch - '0' );
+      result = result * 10 + ( (webvtt_int64)ch - '0' );
       ++digits;
     } else if( mul == 1 && digits == 0 && ch == '-' ) {
       mul = -1;
