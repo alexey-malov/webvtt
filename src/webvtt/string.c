@@ -130,7 +130,7 @@ webvtt_create_string_with_text( webvtt_string *out, const char *init_text,
   }
 
   if( len < 0 ) {
-    len = strlen( init_text );
+    len = (int)strlen( init_text );
   }
 
   /**
@@ -279,7 +279,7 @@ grow( webvtt_string *str, webvtt_uint need )
   }
 
   p = d = str->d;
-  grow = sizeof( *d ) + ( sizeof( char ) * ( d->length + need ) );
+  grow = (webvtt_uint32)sizeof(*d) + ((webvtt_uint32)sizeof(char) * (d->length + need));
 
   if( grow < page ) {
     n = page;
@@ -348,7 +348,7 @@ webvtt_string_getline( webvtt_string *src, const char *buffer,
     d = str->d;
   }
   if( len < 0 ) {
-    len = strlen( buffer );
+    len = (int)strlen( buffer );
   }
   n = buffer + len;
 
@@ -414,7 +414,7 @@ webvtt_string_is_equal( const webvtt_string *str, const char *to_compare,
   }
 
   if( len < 0 ) {
-    len = strlen( to_compare );
+    len = (int)strlen( to_compare );
   }
 
   if( str->d->length != (unsigned)len ) {
@@ -437,7 +437,7 @@ webvtt_string_append( webvtt_string *str, const char *buffer, int len )
   }
 
   if( len < 0 ) {
-    len = strlen( buffer );
+    len = (int)strlen( buffer );
   }
 
   if( len == 0 ) {
