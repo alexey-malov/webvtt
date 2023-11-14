@@ -470,7 +470,7 @@ webvtt_cue_set_setting_from_string( webvtt_cue *cue, const char *word )
     return WEBVTT_BAD_CUESETTING;
   }
 
-  idx = ( value - word ) - 1;
+  idx = (int)(( value - word ) - 1);
   if( idx > 31 ) {
     return WEBVTT_BAD_CUESETTING;
   }
