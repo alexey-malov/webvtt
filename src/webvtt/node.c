@@ -47,8 +47,8 @@ webvtt_ref_node( webvtt_node *node )
 WEBVTT_EXPORT void
 webvtt_init_node( webvtt_node **node )
 {
-  if( *node != &empty_node ) {
-    if( node && *node ) {
+  if( node && *node != &empty_node ) {
+    if( *node ) {
       webvtt_release_node( node );
     }
     *node = &empty_node;
