@@ -352,7 +352,13 @@ webvtt_string_getline( webvtt_string *src, const char *buffer,
   /* This had better be a valid string_data, or else NULL. */
   d = str->d;
   if( !str->d ) {
-    if(WEBVTT_FAILED(webvtt_create_string( 0x100, str ))) {
+    /**
+     * Checking if str->d != NULL helps the code analyzer to understand
+     * that str->d is not null after calling webvtt_create_string.
+     * And it will not complain on possible null pointer dereference
+     * when accessing d->length below.
+     */
+    if(WEBVTT_FAILED(webvtt_create_string( 0x100, str )) || !str->d) {
       return -1;
     }
     d = str->d;
@@ -444,6 +450,14 @@ webvtt_string_append( webvtt_string *str, const char *buffer, int len )
   }
   if( !str->d ) {
     webvtt_init_string( str );
+    /**
+     * Help static code analyzer to understand that str->d is not null
+     * and the later access to str->d->length will not cause
+     * null pointer dereference.
+     */
+    if (!str->d) {
+      return WEBVTT_FAILED_ASSERTION;
+    }
   }
 
   if( len < 0 ) {
