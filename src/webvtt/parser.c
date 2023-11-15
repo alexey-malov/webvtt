@@ -58,7 +58,7 @@ webvtt_create_parser( webvtt_cue_fn on_read,
     return WEBVTT_INVALID_PARAM;
   }
 
-  if( !( p = ( webvtt_parser )webvtt_alloc0( sizeof * p ) ) ) {
+  if( ( p = ( webvtt_parser )webvtt_alloc0( sizeof * p ) ) == NULL ) {
     return WEBVTT_OUT_OF_MEMORY;
   }
 
@@ -581,7 +581,7 @@ parse_webvtt( webvtt_parser self, const char *buffer, webvtt_uint *ppos,
       if( SP->flags == 0 ) {
         int v;
         if( ( v = webvtt_string_getline( &SP->v.text, buffer, &pos, len, 0,
-                                         finish ) ) ) {
+                                         finish ) ) != 0 ) {
           if( v < 0 ) {
             webvtt_release_string( &SP->v.text );
             SP->type = V_NONE;
@@ -858,7 +858,7 @@ webvtt_read_cuetext( webvtt_parser self, const char *b,
     if( !flags ) {
       int v;
       if( ( v = webvtt_string_getline( &self->line_buffer, b, &pos, len,
-                                       &self->truncate, finish ) ) ) {
+                                       &self->truncate, finish ) ) != 0 ) {
         if( v < 0 || WEBVTT_FAILED( webvtt_string_putc( &self->line_buffer,
                                                         '\n' ) ) ) {
           ERROR( WEBVTT_ALLOCATION_FAILED );
