@@ -26,6 +26,8 @@
  */
 
 #include "string_internal.h"
+#include <assert.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -62,6 +64,14 @@ memmem(const void *l, size_t l_len, const void *s, size_t s_len)
     }
   }
   return NULL;
+}
+
+static int
+checked_strlen(const char* s)
+{
+  size_t l = strlen(s);
+  assert(l <= INT_MAX);
+  return (int)l;
 }
 
 static webvtt_string_data empty_string = {
@@ -130,7 +140,7 @@ webvtt_create_string_with_text( webvtt_string *out, const char *init_text,
   }
 
   if( len < 0 ) {
-    len = (int)strlen( init_text );
+    len = checked_strlen(init_text);
   }
 
   /**
@@ -348,7 +358,7 @@ webvtt_string_getline( webvtt_string *src, const char *buffer,
     d = str->d;
   }
   if( len < 0 ) {
-    len = (int)strlen( buffer );
+    len = checked_strlen( buffer );
   }
   n = buffer + len;
 
@@ -414,7 +424,7 @@ webvtt_string_is_equal( const webvtt_string *str, const char *to_compare,
   }
 
   if( len < 0 ) {
-    len = (int)strlen( to_compare );
+    len = checked_strlen(to_compare);
   }
 
   if( str->d->length != (unsigned)len ) {
@@ -437,7 +447,7 @@ webvtt_string_append( webvtt_string *str, const char *buffer, int len )
   }
 
   if( len < 0 ) {
-    len = (int)strlen( buffer );
+    len = checked_strlen( buffer );
   }
 
   if( len == 0 ) {
@@ -475,11 +485,11 @@ webvtt_string_replace( webvtt_string *str, const char *search, int search_len,
   }
 
   if( search_len < 0 ) {
-    search_len = ( int )strlen( search );
+    search_len = checked_strlen( search );
   }
 
   if( replace_len < 0 ) {
-    replace_len = ( int )strlen( replace );
+    replace_len = checked_strlen( replace );
   }
 
   if( ( p = (char *)memmem( str->d->text, str->d->length, search,
@@ -519,11 +529,11 @@ webvtt_string_replace_all( webvtt_string *str, const char *search,
   }
 
   if( search_len < 0 ) {
-    search_len = ( int )strlen( search );
+    search_len = checked_strlen( search );
   }
 
   if( replace_len < 0 ) {
-    replace_len = ( int )strlen( replace );
+    replace_len = checked_strlen( replace );
   }
 
   while( ( status = webvtt_string_replace( str, search, search_len, replace,
@@ -807,8 +817,9 @@ webvtt_utf8_to_utf16( const char *utf8, const char *end,
             /* Non-character, overlong sequence, or utf16 surrogate */
             return 0xFFFD;
           } else {
+            assert((webvtt_uint16)uc == uc);
             /* Non-surrogate */
-            return uc;
+            return (webvtt_uint16)uc;
           }
         }
       }
