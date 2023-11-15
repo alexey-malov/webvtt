@@ -493,7 +493,7 @@ webvtt_string_replace( webvtt_string *str, const char *search, int search_len,
   }
 
   if( ( p = (char *)memmem( str->d->text, str->d->length, search,
-                            search_len ) ) ) {
+                            search_len ) ) != NULL ) {
     const char *end;
     size_t pos = p - str->d->text;
     if( WEBVTT_FAILED( status = grow( str, replace_len ) ) ) {
@@ -806,7 +806,7 @@ webvtt_utf8_to_utf16( const char *utf8, const char *end,
         uc = ( uc << 6 ) | ( ch & 0x3F );
         if (!--need) {
           int nc;
-          if ( !( nc = UTF_IS_NONCHAR( uc ) ) && uc > 0xFFFF && uc < 0x110000) {
+          if ( (( nc = UTF_IS_NONCHAR( uc ) ) == 0) && uc > 0xFFFF && uc < 0x110000) {
             /* Surrogate pair */
             if( high_surrogate ) {
               *high_surrogate = UTF_HIGH_SURROGATE( uc );
