@@ -713,6 +713,7 @@ _recheck:
              * T_BODY state.
              */
             POPBACK();
+            SP->state = T_BODY;
             PUSH0( T_EOL, 1, V_INTEGER );
             break;
           default:

@@ -116,6 +116,89 @@ TEST_F(FileStructure, WebVTTSpaceText)
 }
 
 /*
+ * Verifies that a file with the WebVTT signature, a space, non-line terminating
+ * characters followed by EOL will parse correctly.
+ * From http://dev.w3.org/html5/webvtt/#webvtt-file-body (12/02/2012):
+ *
+ * A WebVTT file body consists of the following components, in the following order:
+ * 1. An optional U+FEFF BYTE ORDER MARK (BOM) character.
+ * 2. The string "WEBVTT".
+ * 3. Optionally, either a U+0020 SPACE character or a U+0009 CHARACTER TABULATION (tab) character followed by any number of characters that are not U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR) characters.
+ * 4. Two or more WebVTT line terminators.
+ * 5. Zero or more WebVTT cues and/or WebVTT comments separated from each other by two or more WebVTT line terminators.
+ * 6. Zero or more WebVTT line terminators.
+ */
+TEST_F(FileStructure, WebVTTSpaceTextEOL)
+{
+  loadVtt( "filestructure/webvtt-space-text-eol.vtt", 0 );
+  ASSERT_EQ( 0, errorCount() ) << "This file should contain no errors.";
+}
+
+/*
+ * Verifies that a file with the WebVTT signature, a space, non-line terminating
+ * characters followed by two EOL characters will parse correctly.
+ * From http://dev.w3.org/html5/webvtt/#webvtt-file-body (12/02/2012):
+ *
+ * A WebVTT file body consists of the following components, in the following order:
+ * 1. An optional U+FEFF BYTE ORDER MARK (BOM) character.
+ * 2. The string "WEBVTT".
+ * 3. Optionally, either a U+0020 SPACE character or a U+0009 CHARACTER TABULATION (tab) character followed by any number of characters that are not U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR) characters.
+ * 4. Two or more WebVTT line terminators.
+ * 5. Zero or more WebVTT cues and/or WebVTT comments separated from each other by two or more WebVTT line terminators.
+ * 6. Zero or more WebVTT line terminators.
+ */
+TEST_F(FileStructure, WebVTTSpaceTextEOLs)
+{
+  loadVtt( "filestructure/webvtt-space-text-eols.vtt", 0 );
+  ASSERT_EQ( 0, errorCount() ) << "This file should contain no errors.";
+}
+
+/*
+ * Verifies that a file with the WebVTT signature, a space, non-line terminating
+ * characters followed by two EOL characters and cue will parse correctly.
+ * From http://dev.w3.org/html5/webvtt/#webvtt-file-body (12/02/2012):
+ *
+ * A WebVTT file body consists of the following components, in the following order:
+ * 1. An optional U+FEFF BYTE ORDER MARK (BOM) character.
+ * 2. The string "WEBVTT".
+ * 3. Optionally, either a U+0020 SPACE character or a U+0009 CHARACTER TABULATION (tab) character followed by any number of characters that are not U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR) characters.
+ * 4. Two or more WebVTT line terminators.
+ * 5. Zero or more WebVTT cues and/or WebVTT comments separated from each other by two or more WebVTT line terminators.
+ * 6. Zero or more WebVTT line terminators.
+ */
+TEST_F(FileStructure, WebVTTSpaceTextEOLsOneCue)
+{
+  loadVtt("filestructure/webvtt-space-text-eols-one-cue.vtt", 1);
+  ASSERT_EQ(0, errorCount()) << "This file should contain no errors.";
+}
+
+/*
+ * Verifies that a file with the WebVTT signature, a space, non-line terminating
+ * characters followed by two EOL characters and cue will parse correctly.
+ * From http://dev.w3.org/html5/webvtt/#webvtt-file-body (12/02/2012):
+ *
+ * A WebVTT file body consists of the following components, in the following
+ * order:
+ * 1. An optional U+FEFF BYTE ORDER MARK (BOM) character.
+ * 2. The string "WEBVTT".
+ * 3. Optionally, either a U+0020 SPACE character or a U+0009 CHARACTER
+ * TABULATION (tab) character followed by any number of characters that are not
+ * U+000A LINE FEED (LF) or U+000D CARRIAGE RETURN (CR) characters.
+ * 4. Two or more WebVTT line terminators.
+ * 5. Zero or more WebVTT cues and/or WebVTT comments separated from each other
+ * by two or more WebVTT line terminators.
+ * 6. Zero or more WebVTT line terminators.
+ */
+TEST_F(FileStructure, WebVTTSpaceTextNoEOLsOneCue) {
+  loadVtt("filestructure/webvtt-space-text-no-eol-cue.vtt", 1);
+  ASSERT_LE(1, errorCount());
+  EXPECT_EQ(1, errorCount());
+  expectEquals(getError(0), WEBVTT_EXPECTED_EOL, 2, 1);
+  expectEquals(getCue(0).startTime(), 0, 13, 0);
+  expectEquals(getCue(0).endTime(), 0, 16, 0);
+}
+
+/*
  * Verifies that a file with text before the WebVTT signature will fail parsing and finish gracefully.
  * From http://dev.w3.org/html5/webvtt/#webvtt-file-body (12/02/2012):
  *
